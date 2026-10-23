@@ -940,25 +940,19 @@ if(fine&&!reduce){
 }
 
 /* =====================================================================
-   TÉLÉCHARGEMENT DU CV (.txt généré dans la langue active)
+   TÉLÉCHARGEMENT DU CV (PDF)
    ===================================================================== */
+const CV_FILES = {
+  fr: 'cv/CV_Ichrak_Ben_Tej_FR.pdf',
+  en: 'cv/CV_Ichrak_Ben_Tej_EN.pdf',
+  ar: 'cv/CV_Ichrak_Ben_Tej_EN.pdf'
+};
 $('#cvBtn').addEventListener('click',()=>{
-  const L=LANG, line='='.repeat(60), sec=(x)=>`\n${x.toUpperCase()}\n${'-'.repeat(x.length)}\n`;
-  let s=`ICHRAK BEN TEJ\n${I18N[L].status.replace(/—/g,'|')}\nTunis, Tunisia | +216 29 651 681 | ichrak.bentej06@gmail.com\nlinkedin.com/in/ichrak-ben-tej | github.com/Ichrak-Ben-Tej\n${line}\n`;
-  s+=sec(I18N[L].col_edu); EDUCATION.forEach(e=>{s+=`• ${e.title[L]} — ${e.org} (${e.date[L]})\n`;e.pts[L].forEach(p=>s+=`    - ${p}\n`)});
-  s+=sec(I18N[L].col_exp); EXPERIENCE.forEach(e=>{s+=`• ${e.title[L]} — ${e.org} (${e.date[L]})\n`;e.pts[L].forEach(p=>s+=`    - ${p}\n`)});
-  s+=sec(I18N[L].proj_t); PROJECTS.forEach(p=>{s+=`• ${p.title[L]} (${p.date[L]}) — ${p.ctx[L]}\n    Tech: ${p.tech.join(', ')}\n`;p.pts[L].forEach(x=>s+=`    - ${x}\n`)});
-  s+=sec(I18N[L].skills_t);
-  s+=`${I18N[L].g_lang}: ${SKILLS.lang.join(', ')}\n${I18N[L].g_fw}: ${SKILLS.fw.join(', ')}\n${I18N[L].g_db}: ${SKILLS.db.join(', ')}\n${I18N[L].g_tools}: ${SKILLS.tools.join(', ')}\n`;
-  s+=sec(I18N[L].cert_t); CERTS.forEach(c=>s+=`• ${c.name} — ${c.org} (${c.date[L]})\n`);
-  s+=sec(I18N[L].col_lead); LEADERSHIP.forEach(l=>s+=`• ${l.role[L]} — ${l.name} (${l.yr[L]})\n`);
-  s+=sec(I18N[L].g_spoken); s+=I18N[L].sp.map(([n,l])=>`${n} (${l})`).join(' | ')+'\n';
-  const blob=new Blob(['﻿'+s],{type:'text/plain;charset=utf-8'}), a=document.createElement('a');
-  a.href=URL.createObjectURL(blob); a.download=`CV_Ichrak_Ben_Tej_${L.toUpperCase()}.txt`;
-  document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+  const file=CV_FILES[LANG]||CV_FILES.fr, a=document.createElement('a');
+  a.href=file; a.download=file.split('/').pop();
+  document.body.appendChild(a); a.click(); a.remove();
   toast(t('cv_done'));
 });
-
 /* =====================================================================
    COPIER, TOAST, FORMULAIRE
    ===================================================================== */
